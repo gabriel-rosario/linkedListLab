@@ -6,11 +6,10 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 	private DNode<E> header, trailer; 
 	private int length; 
 	
-	public DLDHDTList() { 
-		header = null;
+	public DLDHDTList() {
+		header = new DNode<E>(null, null, null);
+		trailer = new DNode<E>(null, header, null);
 		header.setNext(trailer);
-		trailer = null;
-		trailer.setPrev(header);
 		length = 0;
 		// ADD CODE HERE to generate empty linked list of this type 
 	}
