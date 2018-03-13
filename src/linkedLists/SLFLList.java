@@ -24,14 +24,21 @@ public class SLFLList<E> extends SLList<E>
 	
 	
 	public void addFirstNode(Node<E> nuevo) {
-		// TODO Auto-generated method stub
 		SNode <E> sn = (SNode<E>) nuevo;
+		if(length == 0) {
+			first = sn;
+			last = sn;
+			sn.setNext(null);
+		}
+		// TODO Auto-generated method stub
 		sn.setNext(first);
 		first = sn;
+		length++;
 	}
 
 	public void addNodeAfter(Node<E> target, Node<E> nuevo) {
 		// TODO Auto-generated method stub
+		//pre: target is a valid node
 		SNode<E> ts = (SNode<E>) target;
 		SNode<E> ns = (SNode<E>) nuevo;
 		
@@ -53,9 +60,7 @@ public class SLFLList<E> extends SLList<E>
 		//pre: nuevo es tipo SNdoe
 			SNode<E> ts = (SNode<E>) target;
 			SNode<E> ns = (SNode<E>) nuevo;
-				
-			ns.setNext(ts);
-				
+								
 			if(ts == first){
 				first = ns;
 			}else{
@@ -65,6 +70,8 @@ public class SLFLList<E> extends SLList<E>
 				}
 				prev.setNext(ns);
 			}
+			
+			ns.setNext(ts);
 			length++;
 				
 		
@@ -72,15 +79,23 @@ public class SLFLList<E> extends SLList<E>
 
 	public Node<E> getFirstNode() throws NoSuchElementException {
 		// TODO Auto-generated method stub
+		if(length == 0) throw new NoSuchElementException("no such element exists");
+		
 		return first;
 	}
 
 	public Node<E> getLastNode() throws NoSuchElementException {
+		if(length == 0) {
+			throw new NoSuchElementException("no such element exists");
+		}
 		// TODO Auto-generated method stub
 		return last;
 	}
 
 	public Node<E> getNodeAfter(Node<E> target) throws NoSuchElementException {
+		if(target == last) {
+			throw new NoSuchElementException("no such element exists");
+		}
 		// TODO Auto-generated method stub
 		SNode<E> ts = (SNode<E>)target;		
 		
@@ -89,6 +104,9 @@ public class SLFLList<E> extends SLList<E>
 
 	public Node<E> getNodeBefore(Node<E> target)
 			throws NoSuchElementException {
+		if(target == first) {
+			throw new NoSuchElementException("no such element exists");
+		}
 		// TODO Auto-generated method stub
 		SNode ts = (SNode<E>) target;
 		SNode prev = (SNode<E>) first;
@@ -105,9 +123,28 @@ public class SLFLList<E> extends SLList<E>
 	}
 
 	public void removeNode(Node<E> target) {
-		// TODO Auto-generated method stub
 		SNode<E> ntr = (SNode<E>) target;
 		SNode<E> next = ntr.getNext();
+		SNode<E> prev = (SNode<E>) first;
+		
+		while(prev != ntr){
+			prev = prev.getNext();
+		}
+
+		//only one node
+		if (target == first && target == last) {
+			first = null;
+			last = null;
+		}else if(target == first) {
+			first = ntr.getNext();
+		}else if(target == last) {
+			last = prev;
+		}else {
+			prev.setNext(next);
+		}
+		length --;
+		
+		// TODO Auto-generated method stub
 		
 	}
 	
@@ -140,7 +177,6 @@ public class SLFLList<E> extends SLList<E>
 				sn.getNext();
 			}
 		}
-		// TODO as in Exercise 3
 		return array;
 	}
 }

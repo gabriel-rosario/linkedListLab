@@ -8,7 +8,9 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 	
 	public DLDHDTList() { 
 		header = null;
+		header.setNext(trailer);
 		trailer = null;
+		trailer.setPrev(header);
 		length = 0;
 		// ADD CODE HERE to generate empty linked list of this type 
 	}
@@ -44,11 +46,17 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 		DNode<E> nuevoD = (DNode<E>) nuevo;
 		DNode<E> prev = td.getPrev();
 		
+		if(target == header.getNext()) {
+			nuevoD.setPrev(header);
+			header.setNext(nuevoD);
+			nuevoD.setNext(td);
+			td.setPrev(nuevoD);
+		}else {
 		nuevoD.setNext(td);
 		nuevoD.setPrev(prev);
 		prev.setNext(nuevoD);
 		td.setPrev(nuevoD);
-
+		}
 	}
 
 	public Node<E> createNewNode() {
@@ -69,6 +77,9 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 
 	public Node<E> getNodeAfter(Node<E> target)
 			throws NoSuchElementException {
+		if(target == trailer.getPrev()) {
+			throw new NoSuchElementException("no such element exists");
+		}
 		// ADD CODE HERE AND MODIFY RETURN ACCORDINGLY
 		DNode<E> td = (DNode<E>) target;
 		
@@ -77,6 +88,9 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 
 	public Node<E> getNodeBefore(Node<E> target)
 			throws NoSuchElementException {
+		if(target == header.getNext()) {
+			throw new NoSuchElementException("no such element exists");
+		}
 		// ADD CODE HERE AND MODIFY RETURN ACCORDINGLY
 		DNode<E> td = (DNode<E>) target;
 
@@ -93,8 +107,20 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 		DNode<E> prev = td.getPrev();
 		DNode<E> next = td.getNext();
 		
-		prev.setNext(next);
-		next.setPrev(prev);
+		if(target == header.getNext() && target == trailer.getPrev()) {
+			header.setNext(trailer);;
+			trailer.setPrev(header);;
+		}else if(target == trailer.getPrev()) {
+			prev.setNext(trailer);
+			trailer.setPrev(prev);
+		}else if(target == header) {
+			next.setPrev(header);
+			header.setNext(next);
+		}else {
+			prev.setNext(next);
+			next.setPrev(prev);
+		}
+		length --;
 
 	}
 	
