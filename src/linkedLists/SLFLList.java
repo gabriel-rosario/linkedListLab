@@ -10,6 +10,7 @@ package linkedLists;
 import java.util.NoSuchElementException;
 
 import linkedLists.LinkedList;
+import linkedLists.AbstractDLList.DNode;
 
 public class SLFLList<E> extends SLList<E>
 {
@@ -114,4 +115,32 @@ public class SLFLList<E> extends SLList<E>
 		return new SNode<E>();
 	}
 
+	public Object[] toArray() {
+		Object[] newArray = new Object[length];
+		SNode<E> sn = (SNode<E>) first;
+		int i = 0;
+		while(i < length) {
+			newArray[i] = sn.getElement();
+			sn.getNext();
+			i++;
+		}
+		return newArray;
+	}
+
+
+	public <T1> T1[] toArray(T1[] array) {
+		SNode<E> sn = (SNode<E>) first;
+		if(length<array.length) {
+			for(int i = 0;i<length;i++) {
+				array[i] =  (T1) sn.getElement();
+				sn.getNext();
+			}
+			for(int i = length; i<array.length ;i++) {
+				array[i] = null;
+				sn.getNext();
+			}
+		}
+		// TODO as in Exercise 3
+		return array;
+	}
 }

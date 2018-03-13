@@ -7,6 +7,9 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 	private int length; 
 	
 	public DLDHDTList() { 
+		header = null;
+		trailer = null;
+		length = 0;
 		// ADD CODE HERE to generate empty linked list of this type 
 	}
 	
@@ -37,6 +40,15 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 
 	public void addNodeBefore(Node<E> target, Node<E> nuevo) {
 		// ADD CODE HERE
+		DNode<E> td = (DNode<E>) target;
+		DNode<E> nuevoD = (DNode<E>) nuevo;
+		DNode<E> prev = td.getPrev();
+		
+		nuevoD.setNext(td);
+		nuevoD.setPrev(prev);
+		prev.setNext(nuevoD);
+		td.setPrev(nuevoD);
+
 	}
 
 	public Node<E> createNewNode() {
@@ -58,13 +70,17 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 	public Node<E> getNodeAfter(Node<E> target)
 			throws NoSuchElementException {
 		// ADD CODE HERE AND MODIFY RETURN ACCORDINGLY
-		return null; 
+		DNode<E> td = (DNode<E>) target;
+		
+		return td.getNext(); 
 	}
 
 	public Node<E> getNodeBefore(Node<E> target)
 			throws NoSuchElementException {
 		// ADD CODE HERE AND MODIFY RETURN ACCORDINGLY
-		return null; 
+		DNode<E> td = (DNode<E>) target;
+
+		return td.getPrev(); 
 	}
 
 	public int length() {
@@ -73,6 +89,42 @@ public class DLDHDTList<E> extends AbstractDLList<E> {
 
 	public void removeNode(Node<E> target) {
 		// ADD CODE HERE to disconnect target from the linked list, reduce lent, clean target...
+		DNode<E> td = (DNode<E>) target;
+		DNode<E> prev = td.getPrev();
+		DNode<E> next = td.getNext();
+		
+		prev.setNext(next);
+		next.setPrev(prev);
+
+	}
+	
+	public Object[] toArray() {
+		Object[] newArray = new Object[length];
+		DNode<E> dn = (DNode<E>) header;
+		int i = 0;
+		while(i < length) {
+			newArray[i] = dn.getElement();
+			dn.getNext();
+			i++;
+		}
+		return newArray;
+	}
+
+
+	public <T1> T1[] toArray(T1[] array) {
+		DNode<E> dn = (DNode<E>) header;
+		if(length<array.length) {
+			for(int i = 0;i<length;i++) {
+				array[i] =  (T1) dn.getElement();
+				dn.getNext();
+			}
+			for(int i = length; i<array.length ;i++) {
+				array[i] = null;
+				dn.getNext();
+			}
+		}
+		// TODO as in Exercise 3
+		return array;
 	}
 	
 	/**
